@@ -1,0 +1,6 @@
+Customer_ID,Age,Gender,Income_Range,Region
+101,35,Male,$50000-$75000,North
+102,28,Female,$40000-$50000,South
+103,45,Female,$75000-$100000,East
+104,50,Male,$100000+,West
+105,40,Male,$50000-$75000,North

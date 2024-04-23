@@ -1,0 +1,6 @@
+Customer_ID,Product_ID,Product_Name,Category,Unit_Price,Units_Sold,Revenue
+101,1,Laptop,Electronics,800,100,80000
+102,2,T-Shirt,Clothing,20,500,10000
+103,3,Smartphone,Electronics,600,200,120000
+101,4,Sneakers,Clothing,50,300,15000
+104,5,Milk,Groceries,2,1000,2000
