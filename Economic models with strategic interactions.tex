@@ -1,0 +1,430 @@
+% !TeX spellcheck = en_GB
+\documentclass[10pt]{beamer}
+\usetheme{CambridgeUS}
+%\usetheme{Boadilla}
+\definecolor{myred}{RGB}{163,0,0}
+%\usecolortheme[named=blue]{structure}
+\usecolortheme{dove}
+\usefonttheme[]{professionalfonts}
+\usepackage[english]{babel}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{xcolor}
+\usepackage{tikz}
+\tikzset{>=latex}
+\usepackage{bm}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{caption}
+\usepackage{verbatim}
+\usepackage{paratype}
+\usepackage{mathpazo}
+\usepackage{listings}
+\usepackage{sgamevar}
+
+\newcommand{\bs}{\boldsymbol}
+
+\newcommand{\cc}[1]{\texttt{\textcolor{blue}{#1}}}
+
+\definecolor{ttcolor}{RGB}{0,0,1}%{RGB}{163,0,0}
+
+% Number theorem environments
+\setbeamertemplate{theorem}[ams style]
+\setbeamertemplate{theorems}[numbered]
+
+% Reset theorem-like environments so that each is numbered separately
+%\usepackage{etoolbox}
+%\undef{\definition}
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}
+\theoremstyle{definition}
+\newtheorem{defn}{\translate{Definition}}
+
+% Change colours for theorem-like environments
+\definecolor{mygreen1}{RGB}{0,96,0}
+\definecolor{mygreen2}{RGB}{229,239,229}
+\setbeamercolor{block title}{fg=white,bg=mygreen1}
+\setbeamercolor{block body}{fg=black,bg=mygreen2}
+
+\lstdefinestyle{numbers}{numbers=left, stepnumber=1, numberstyle=\tiny, numbersep=10pt}
+\lstdefinestyle{MyFrame}{backgroundcolor=\color{yellow},frame=shadowbox}
+
+\hypersetup{colorlinks, urlcolor=blue, linkcolor = myred}
+
+\title{Economic models with strategic interactions}
+\author{Andrey Vassilev}
+
+\date{} 
+
+\AtBeginSection{\frame{\usebeamerfont{section title}\centering\insertsection}}
+
+\begin{document}
+\maketitle
+
+\begin{frame}[fragile]
+\frametitle{Lecture Contents}
+\tableofcontents
+\end{frame} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Strategic interactions and game theory}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\begin{frame}[fragile]
+\frametitle{What is a game?}
+\framesubtitle{}
+\begin{itemize}\itemsep1em
+\item You are already familiar with the idea that rational economic agents will pursue well-defined objectives under certain constraints.
+\item This is typically formalized as an optimization problem of some sort (e.g. a static constrained optimization problem or an optimal control problem).
+\item In simpler setups, it is assumed that the decision maker controls (optimizes over) certain variables and takes others as completely exogenous. Thus, the outcome will (rather, seems to) depend only on their own decisions.
+\item In some situations, however, it is more relevant to take into account that the outcome also depends on the decisions of other persons/entities, each having its own objective.
+\item When there are recognized multiperson interactions, there is potential for \emph{strategic interdependence}.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{What is a game?}
+\framesubtitle{}
+\begin{itemize}\itemsep1em
+\item Strategic interdependence implies that we can reason about how other agents will take into account the way everybody plans their actions, and adjust our behaviour accordingly.
+\item Everybody else is of course doing the same.
+\item \alert{Such situations are called {\color{red}games}.} They are the object of study of \emph{game theory}.
+\item Contrast this with the theory of competitive equilibrium, where agents are not directly interested in one another's actions but in certain environment variables (e.g. prices), even though these environment variables are the outcome of everybody's decisions.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]\newcounter{examplecount}\setcounter{examplecount}{1}\newcounter{slidenum}\stepcounter{slidenum}
+\frametitle{Example \arabic{examplecount}}
+\framesubtitle{A first look at a game (\arabic{slidenum})}
+
+\begin{itemize}\itemsep1em
+\item Simple games can often be represented in the form of a table.
+\item Consider two persons, Player 1 and Player 2, each having at their disposal two possible actions: $\{U,D\} $ for Player 1 and $ \{L,R\} $ for Player 2.
+\item They choose simultaneously and independently an action, knowing that the outcome will be determined by the combination of their choices.
+\item The outcome takes the form of monetary payoffs to each player and is summarized in the table shown on the next slide.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]\stepcounter{slidenum}
+\frametitle{Example \arabic{examplecount}}
+\framesubtitle{A first look at a game (\arabic{slidenum})}
+
+\begin{center}
+\begin{game}{2}{2}[\color{red}Player~1][\color{blue}Player~2]
+ \> {\color{blue}$ L $} \> {\color{blue}$ R $}\\
+{\color{red} $ U $} \>  $ {\color{red}5},{\color{blue}6} $  \> $ {\color{red}0},{\color{blue}9} $\\
+{\color{red} $ D $} \> $ {\color{red}10},{\color{blue}1} $ \> $ {\color{red}3},{\color{blue}2} $
+\end{game}
+\end{center}\bigskip
+
+Here is a preview of some of the considerations arising in game theoretic situations:
+\begin{itemize}\itemsep1em
+\item Suppose that Player 1 played $ U $ and Player 2 played $ L $. Will Player 1 regret her choice after the outcome has been revealed? Would she change her mind if given the chance to amend her choice?
+\item How about Player 2?
+\item What if Player 1 chooses $ U $ and Player 2 chooses $ R $? 
+\end{itemize}
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Games in strategic form}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]
+\frametitle{General formulation of games in strategic form}
+\framesubtitle{}
+\begin{itemize}\itemsep1em
+\item Even though games in strategic form are often presented in tabular form (as we have already seen), this is not the most general form.
+\item A strategic-form game is defined by the following elements:
+	\begin{itemize}\itemsep1em
+	\item The set of players $ N = \{1,2,\ldots,n\} $.
+	\item The set $ S_i $ of strategies available to player $ i\in N $.
+	
+	The set of all possible strategy vectors is denoted $ S = S_1 \times S_2 \times \cdots \times S_n $. An element of $ S $ is sometimes called a \emph{strategy profile}.
+	\item A function $ u_i : S \rightarrow \mathbb{R} $ which gives the payoff to player $ i \in N$ associated with a vector of strategies $ s \in S $.
+	\end{itemize}
+\item Note that this definition does not require the sets of strategies $ S_i $ to be finite. 
+\item \emph{Finite games}, defined by the fact that the players' strategy sets are finite, are a special case that is representable in tabular form.
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[fragile]
+\frametitle{Nash equilibria}
+\framesubtitle{Motivation}
+\begin{itemize}\itemsep1em
+\item One approach to the analysis of a game is to look for some sort of stable outcome.
+\item A possible definition of ``stability'' of an outcome is based on the idea that in a stable outcome no-one should have incentives to unilaterally deviate from his chosen strategy if given that choice.
+\item This idea forms the basis of the so-called \emph{Nash equilibrium}.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Nash equilibria}
+\framesubtitle{Definition}
+We introduce the following notation: if $ s_i $ is the strategy of player $ i $ in a strategy vector $ s $, then the strategies of all the other players in $ s $ will be denoted by $ s_{-i} $.\bigskip
+
+\begin{defn}[Nash equilibrium]\label{def:NashEq}
+A strategy vector $ s^* = (s_1^*,\ldots,s_n^*) $ is a \emph{Nash equilibrium} if for each player $ i \in N $ and each strategy $ s_i \in S_i $ the following is satisfied:
+\begin{equation}
+u_i(s^*)\geq u_i(s_i,s^*_{-i}).
+\label{eq:NE}
+\end{equation}
+
+The payoff vector $ u(s^*) = (u_1(s*),\ldots,u_n(s^*) $ is the equilibrium payoff corresponding to Nash equilibrium $ s^* $.
+\end{defn}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+\frametitle{Nash equilibria}
+\framesubtitle{Existence and uniqueness of Nash equilibria}
+\begin{itemize}\itemsep1em
+\item Nash equilibria need not exist for an arbitrary game.
+\item Their existence is guaranteed under special technical assumptions. We shall not go into the details of the existence results but shall confine ourselves to cases where Nash equilibria exist.
+\item In cases where there is a Nash equilibrium, it need not be unique.
+\end{itemize}
+\end{frame}
+
+
+
+\setcounter{slidenum}{1}
+\begin{frame}[fragile]
+\frametitle{Best replies and Nash equilibria (\arabic{slidenum})}
+\framesubtitle{}
+\begin{itemize}\itemsep1em
+\item An equivalent way of defining a Nash equilibrium is through the concept of a \emph{best reply}.
+\item It is sometimes more convenient to work with best replies since they provide a natural approach to computing Nash equilibria.
+\end{itemize}
+
+\begin{defn}[Best reply]\label{def:BR}
+Let $ s_{-i} $ be a strategy vector of all the players except player $ i $. Player $ i $'s strategy $ s_i $ is called a \emph{best reply} to $ s_{-i} $ if \begin{equation}
+u_i(s_i,s_{-i}) = \max_{t_i \in S_i}u_i(t_i,s_{-i}).
+\label{eq:BR}
+\end{equation}
+\end{defn}
+\end{frame}
+
+
+
+\begin{frame}[fragile]\stepcounter{slidenum}
+\frametitle{Best replies and Nash equilibria (\arabic{slidenum})}
+\framesubtitle{}
+The following definition of a Nash equilibrium can be shown to be \textbf{equivalent} to Definition \ref{def:NashEq}:\bigskip
+
+\begin{defn}[Nash equilibrium]\label{def:NashEq2}
+A strategy vector $ s^* = (s_1^*,\ldots,s_n^*) $ is a \emph{Nash equilibrium} if $ s_i^* $ is a best reply to $ s_{-i}^* $ for every player $ i \in N $.
+\end{defn}
+\end{frame}
+
+
+
+\begin{frame}[fragile]\stepcounter{examplecount}
+\frametitle{Example \arabic{examplecount}}
+\framesubtitle{An obvious Nash equilibrium}
+
+\begin{center}
+\begin{game}{2}{2}[Player~1][Player~2]
+ \> $ X $ \> $ Y $ \\
+$ A $ \> $ 5,5 $ \> $ 1,1 $ \\
+$ B $ \> $ 1,1 $ \> $ 0,0 $
+\end{game}
+\end{center}\bigskip
+
+\begin{itemize}\itemsep1em
+\item It is obvious that $ (A,X) $ is an equilibrium: it yields the highest possible payoffs for both players and there are no incentives to deviate from it.
+\item The interests of both players coincide and there is no element of conflict in the game.
+\item In that sense this game is trivial.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]\stepcounter{examplecount}\setcounter{slidenum}{1}
+\frametitle{Example \arabic{examplecount}}
+\framesubtitle{Prisoner's Dilemma (\arabic{slidenum})}
+\begin{itemize}\itemsep1em
+\item Two persons are arrested on suspicion of committing a serious crime. The sentence for this crime is 10 years in prison.
+\item However, evidence is insufficient and they can only be sentenced to 1 year in prison for a lesser crime.
+\item The suspects are held in separate cells and cannot communicate.
+\item The prosecutor offers each of them a deal: if they tell on their friend (defect, strategy $ D $), they will receive immunity as a state witness (i.e. 0 years in prison) and the friend gets the full 10 years.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example \arabic{examplecount}}\stepcounter{slidenum}
+\framesubtitle{Prisoner's Dilemma (\arabic{slidenum})}
+\begin{itemize}\itemsep1em
+\item If they cooperate with each other and remain silent (strategy $ C $), they get 1 year in prison each for the small crime.
+\item If both suspects defect, they get an intermediate sentence of 6 years in prison, since their confession is counted as mitigating behaviour in court.
+\item The prisoners are asked to make their choices on the prosecutor's offer independently and simultaneously. No information is exchanged in the process.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Example \arabic{examplecount}}\stepcounter{slidenum}
+\framesubtitle{Prisoner's Dilemma (\arabic{slidenum})}
+\begin{center}
+\begin{game}{2}{2}[Player~1][Player~2][The Prisoner's Dilemma: outcomes presented as years in prison.]
+ \> $ D $ \> $ C $ \\
+$ D $ \> $ 6,6 $ \> $ 0,10 $ \\
+$ C $ \> $ 10,0 $ \> $ 1,1 $
+\end{game}
+\end{center}\bigskip
+
+\begin{itemize}\itemsep1em
+\item This game has one Nash equilibrium, $ (D,D) $, with a payoff profile of $ (6,6) $.
+\item It is easy to verify that, whatever the choice of the other player, a player who played $ C $ would wish he had played $ D $ instead.
+\item Indeed, $ C $ is a dominated strategy in this game.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Nash equilibria and Pareto optimality}
+\framesubtitle{}
+\begin{itemize}\itemsep1em
+\item The example of the Prisoner's Dilemma shows that a Nash equilibrium need not be Pareto optimal.
+\item The outcome $ (6,6) $ is Pareto-dominated by $ (1,1) $, obtainable if both players choose to cooperate.
+\item Thus, strategic incentives may lead to a deviation from social optimality.
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Duopoly theory}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\stepcounter{examplecount}
+\begin{frame}[fragile]\setcounter{slidenum}{1}
+	\frametitle{Example \arabic{examplecount}}
+	\framesubtitle{Bertrand duopoly competition (\arabic{slidenum})}
+	\begin{itemize}\itemsep1em
+		\item In some cases we need to go beyond the framework of finite games and work with an infinite pure strategy set. 
+		\item The Bertrand model provides a simple example.
+		\item There are two firms operating in a common market and producing the same good.
+		\item Market demand, represented by a relation giving quantity $q$ as a function of the price $p \geq 0$, is
+		\[q(p) = \max\{0,2-p\}. \]
+		\item Both firms have constant returns to scale technologies with the same cost per unit $c>0$, with $c$ sufficiently small (more on that later).
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\stepcounter{slidenum}
+	\frametitle{Example \arabic{examplecount}}
+	\framesubtitle{Bertrand duopoly competition (\arabic{slidenum})}
+	\begin{itemize}\itemsep1em
+		\item The two firms simultaneously set their prices $p_1$ and $p_2$, i.e. their strategy sets are the admissible values of $p_i$, $i=1,2$.
+		\item Buyers then choose the firm with the lower price to execute their orders.
+		\item Quantity sold for Firm 1:
+		\[ q_1(p_1,p_2) = \left\{ \begin{array}{ll}
+			q(p_1) &\text{ if } p_1<p_2 \\
+			\frac{1}{2}q(p_1) &\text{ if } p_1=p_2\\
+			0 &\text{ if } p_1>p_2.
+		\end{array} \right. \]
+				\item Quantity sold for Firm 2:
+		\[ q_2(p_1,p_2) = \left\{ \begin{array}{ll}
+			0 &\text{ if } p_1<p_2 \\
+			\frac{1}{2}q(p_2) &\text{ if } p_1=p_2\\
+			q(p_2) &\text{ if } p_1>p_2.
+		\end{array} \right. \]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]\stepcounter{slidenum}
+	\frametitle{Example \arabic{examplecount}}
+	\framesubtitle{Bertrand duopoly competition (\arabic{slidenum})}
+	\begin{itemize}\itemsep1em
+		\item The payoff for Firm $i$ is its profit, given by 
+		\[ u_i(p_1,p_2) = p_i q_i(p_1,p_2) - c q_i(p_1,p_2) = (p_i-c) q_i(p_1,p_2). \]
+		\item The requirement of $c$ being ``sufficiently small'' should now be clear -- we want to avoid a situation where payoffs are nonpositive over the entire strategy set of a player.
+		\item What are the Nash equilibria of this game?
+		\item First, observe that $p_i < c$ cannot be a part of a Nash equilibrium profile because it is dominated by $p_i = c$.
+		\item Next, note that $p_i = c, ~ p_j > c $ is not a Nash equilibrium.
+		\begin{itemize}\setlength\itemsep{0.5em}
+			\item Choosing $p_i = c$ yields zero payoff, which is dominated by any $p_i + \varepsilon (p_j-c)$, $\varepsilon \in (0,1)$.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]\stepcounter{slidenum}
+	\frametitle{Example \arabic{examplecount}}
+	\framesubtitle{Bertrand duopoly competition (\arabic{slidenum})}
+	\begin{itemize}\itemsep1em
+		\item Then, observe that $p_i > c$ and $p_j > c$ is not a Nash equilibrium.
+		\begin{itemize}\setlength\itemsep{0.5em}
+			\item Suppose, for instance, that $p_1 \leq p_2$.
+			\item Firm 2 can make at most $(p_1-c) \frac{1}{2}q(p_1)$ (when $p_1=p_2$) or 0 when $p_1<p_2$.
+			\item If it changed its price to $p_1-\varepsilon$ for $\varepsilon>0$, its profit would be $(p_1-\varepsilon-c)q(p_1-\varepsilon)$, which is greater than $\frac{1}{2}(p_1-c) q(p_1)$ for $\varepsilon$ small enough.
+		\end{itemize}
+		\item Finally, $p_1=p_2=c$ is a Nash equilibrium, associated with zero profits.
+		\begin{itemize}\setlength\itemsep{0.5em}
+			\item Increasing $p_i$ above $c$ doesn't change anything.
+			\item Lowering $p_i$ below $c$ brings about negative profit.
+		\end{itemize}
+		\item Thus, the standard Bertrand model reproduces the competitive equilibrium outcome.
+	\end{itemize}
+\end{frame}
+
+
+
+\stepcounter{examplecount}
+\begin{frame}[fragile]\setcounter{slidenum}{1}
+\frametitle{Example \arabic{examplecount}}
+\framesubtitle{Cournot duopoly competition (\arabic{slidenum})}
+\begin{itemize}\itemsep1em
+\item The Cournot model provides a modification of the Bertrand setup for the case where competitors choose quantities instead of prices.
+\item There are two firms operating on a market for a single good. Firm $ i $ produces quantity $ q_i \geq 0$, $ i=1,2 $. Thus, the total quantity supplied is $ q =  q_1 + q_2 $.
+\item The price of the good is determined by demand and can be represented as a function of the total quantity supplied through the relation\footnote{Here we use a simpler formulation for convenience instead of $ p = \max\{0,2-q\} $.\newline }
+\[ p = 2 - q = 2 - q_1 - q_2. \]
+\item The cost per unit of the good is $ c_i > 0 $ for Firm $ i $.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]\stepcounter{slidenum}
+\frametitle{Example \arabic{examplecount}}
+\framesubtitle{Cournot duopoly competition (\arabic{slidenum})}
+\begin{itemize}\itemsep1em
+\item The payoff for Player 1 is his profit, given by 
+\[ u_1(q_1,q_2) = q_1 (2-q_1-q_2) - q_1 c_1 = -q_1^2 + (2-c_1-q_2)q_1 \] and the payoff for Player 2 is analogously 
+\[ u_2(q_1,q_2) = q_2 (2-q_1-q_2) - q_2 c_2 = -q_2^2 + (2-c_2-q_1)q_2 .\]
+\item For a fixed $ q_2 $, Player 1's best reply is given by the maximizing value of $ q_1 $, which is \begin{equation}
+q_1 = \frac{2-c_1-q_2}{2}.
+\label{eq:CournotBR1}
+\end{equation} The best reply of Player 2 to a given $ q_1 $ is similarly \begin{equation}
+q_2 = \frac{2-c_2-q_1}{2} .
+\label{eq:CournotBR2}
+\end{equation} 
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]\stepcounter{slidenum}
+\frametitle{Example \arabic{examplecount}}
+\framesubtitle{Cournot duopoly competition (\arabic{slidenum})}
+\begin{itemize}\itemsep1em
+\item Solving the system of best replies \eqref{eq:CournotBR1} and \eqref{eq:CournotBR2}, we obtain the Nash equilibrium \[ q^*_1 = \dfrac{2-2c_1+c_2}{3},\qquad q^*_2 = \dfrac{2-2c_2+c_1}{3}. \]
+\item In equilibrium the respective payoffs can be shown to be \[ u_1(q_1^*,q_2^*) = (q_1^*)^2 \] and \[ u_2(q_1^*,q_2^*) = (q_2^*)^2 .\]
+\end{itemize}
+\end{frame}
+
+
+
+\end{document}
